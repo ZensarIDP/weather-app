@@ -1,7 +1,7 @@
 
 name: Database Setup
-
-on:
+vh
+on:hh
   workflow_dispatch:
     inputs:
       action:
