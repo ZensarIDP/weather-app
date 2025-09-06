@@ -15,6 +15,9 @@ env:
   GKE_NAMESPACE: default
 
 jobs:
+fsdf
+fs
+fs
   build:
     runs-on: ubuntu-latest
     steps:
