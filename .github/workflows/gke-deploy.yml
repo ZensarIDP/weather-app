@@ -13,6 +13,7 @@ env:
   CLUSTER_NAME: your-gke-cluster
   GKE_ZONE: your-gke-zone
   GKE_NAMESPACE: default
+  REPO_NAME: weather-app  # Assuming the repo name is the same as the IMAGE_NAME
 
 jobs:
   build:
@@ -54,6 +55,19 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ env.PROJECT_ID }}
+
+      - name: Create Artifact Registry Repository if not exists
+        run: |
+          if ! gcloud artifacts repositories describe ${{ env.REPO_NAME }} --location=${{ env.GKE_ZONE }} --project=${{ env.PROJECT_ID }}; then
+            echo "Repository ${{ env.REPO_NAME }} does not exist. Creating..."
+            gcloud artifacts repositories create ${{ env.REPO_NAME }} \
+              --repository-format=docker \
+              --location=${{ env.GKE_ZONE }} \
+              --description="Docker repository for ${{ env.REPO_NAME }}" \
+              --project=${{ env.PROJECT_ID }}
+          else
+            echo "Repository ${{ env.REPO_NAME }} already exists."
+          fi
 
       - name: Get GKE credentials
         run: |
