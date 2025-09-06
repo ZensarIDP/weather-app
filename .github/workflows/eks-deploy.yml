@@ -5,12 +5,12 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'Database action'
+        description: 'Database action'gfgf
         required: true
         default: 'setup'
         type: choice
         options:
-          - setuphth
+          - setup
           - destroy
 
 env:
@@ -28,7 +28,7 @@ jobs:
     if: github.event.inputs.action == 'setup'
 
     steps:
-      - name: Checkout code
+      - name: Checkout codegfgf
         uses: actions/checkout@v4
 
       - name: Authenticate to Google Cloud
@@ -36,9 +36,10 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
+fgf
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
-htht
+
       - name: Enable Cloud SQL API
         run: |
           echo "Enabling Cloud SQL API..."
@@ -48,8 +49,7 @@ htht
         if: ${{ env.DB_TYPE == 'mysql' }}
         run: |
           # Create MySQL instance
-          gcloud sql instances create ${{ env.DB_NAME }}-ingrgrg
-grgrstance \
+          gcloud sql instances create ${{ env.DB_NAME }}-instance \
             --database-version=MYSQL_8_0 \
             --tier=db-f1-micro \
             --region=${{ env.REGION }} \
@@ -62,8 +62,6 @@ grgrstance \
           gcloud sql instances create ${{ env.DB_NAME }}-instance \
             --database-version=POSTGRES_14 \
             --tier=db-f1-micro \
-grg
-grg
             --region=${{ env.REGION }} \
             --project=${{ env.PROJECT_ID }}
 
