@@ -14,6 +14,11 @@ env:
   GKE_ZONE: your-gke-zone
   GKE_NAMESPACE: default
 
+fwwefef
+eve
+43
+54
+
 jobs:
   build:
     runs-on: ubuntu-latest
