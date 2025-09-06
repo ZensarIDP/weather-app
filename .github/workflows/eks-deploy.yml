@@ -1,4 +1,4 @@
-name: GKE Deployment Pipeline
+name: EKS Deployment Pipeline
 
 on:
   push:
@@ -9,15 +9,11 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: weather-app
-  PROJECT_ID: dev-zephyr-352206
-  CLUSTER_NAME: your-gke-cluster
-  GKE_ZONE: your-gke-zone
-  GKE_NAMESPACE: default
+  AWS_REGION: us-west-2
+  EKS_CLUSTER_NAME: your-eks-cluster
+  EKS_NAMESPACE: default
 
 jobs:
-fsdf
-fs
-fs
   build:
     runs-on: ubuntu-latest
     steps:
@@ -48,20 +44,17 @@ fs
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ env.PROJECT_ID }}
-
-      - name: Get GKE credentials
+      - name: Update kubeconfig
         run: |
-          gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} --zone ${{ env.GKE_ZONE }}
+          aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
 
-      - name: Deploy to GKE
+      - name: Deploy to EKS
         run: |
-          kubectl set image deployment/${{ env.SERVICE_NAME }} ${env.SERVICE_NAME}=${{ env.REGISTRY }}/${{ github.repository }}:${{ github.sha }} -n ${{ env.GKE_NAMESPACE }}
+          kubectl set image deployment/${{ env.IMAGE_NAME }} ${env.IMAGE_NAME}=${{ env.REGISTRY }}/${{ github.repository }}:${{ github.sha }} -n ${{ env.EKS_NAMESPACE }}
