@@ -10,7 +10,7 @@ on:
         default: 'setup'
         type: choice
         options:
-          - setup
+          - setuphth
           - destroy
 
 env:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
-
+htht
       - name: Enable Cloud SQL API
         run: |
           echo "Enabling Cloud SQL API..."
@@ -48,7 +48,8 @@ jobs:
         if: ${{ env.DB_TYPE == 'mysql' }}
         run: |
           # Create MySQL instance
-          gcloud sql instances create ${{ env.DB_NAME }}-instance \
+          gcloud sql instances create ${{ env.DB_NAME }}-ingrgrg
+grgrstance \
             --database-version=MYSQL_8_0 \
             --tier=db-f1-micro \
             --region=${{ env.REGION }} \
@@ -61,6 +62,8 @@ jobs:
           gcloud sql instances create ${{ env.DB_NAME }}-instance \
             --database-version=POSTGRES_14 \
             --tier=db-f1-micro \
+grg
+grg
             --region=${{ env.REGION }} \
             --project=${{ env.PROJECT_ID }}
 
