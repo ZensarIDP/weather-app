@@ -59,6 +59,11 @@ jobs:
         run: |
           gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} --zone ${{ env.GKE_ZONE }}
 
+vrberbeb
+eberber4324
+
       - name: Deploy to GKE
         run: |
           kubectl set image deployment/${{ env.SERVICE_NAME }} ${env.SERVICE_NAME}=${{ env.REGISTRY }}/${{ github.repository }}:${{ github.sha }} -n ${{ env.GKE_NAMESPACE }}
+
+fegferg
