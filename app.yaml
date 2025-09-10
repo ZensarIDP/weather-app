@@ -1,0 +1,25 @@
+runtime: nodejs18
+env: standard
+
+handlers:
+  - url: /.*
+    script: auto
+
+env_variables:
+  NODE_ENV: 'production'
+  PORT: '8080'
+
+automatic_scaling:
+  min_idle_instances: 1
+  max_idle_instances: 5
+  min_total_instances: 1
+  max_total_instances: 10
+  cpu_utilization:
+    target_utilization: 0.6
+
+health_check:
+  enable_health_check: true
+  check_interval_sec: 5
+  timeout_sec: 4
+  healthy_threshold: 2
+  unhealthy_threshold: 10
