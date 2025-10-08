@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-app
+  namespace: 
+  labels:
+    app: weather-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: weather-app
+  template:
+    metadata:
+      labels:
+        app: weather-app
+    spec:
+      containers:
+      - name: weather-app
+        image: asia-south1-docker.pkg.dev/dev-zephyr-352206/weather-app/weather-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: OPENWEATHER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: openweather-api-key
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-app-service
+  namespace: 
+spec:
+  selector:
+    app: weather-app
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: LoadBalancer
